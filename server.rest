@@ -2,9 +2,9 @@ GET http://localhost:5000/api/all
 
 
 ###
-GET http://localhost:5000/api/q
+POST http://localhost:5000/api/q
 Content-Type: application/json
 
 {
-    "key":"Parashuram tintin"
+    "key":"."
 }

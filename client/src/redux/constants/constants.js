@@ -1,0 +1,3 @@
+export const ITEM_LOADING = "ITEM_LOADING";
+export const ITEM_LOADING_FAILED = "ITEM_LOADING_FAILED";
+export const ITEM_LOADED = "ITEM_LOADED";

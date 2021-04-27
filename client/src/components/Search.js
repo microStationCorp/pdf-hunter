@@ -4,6 +4,8 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import { useState } from "react";
+import { connect } from "react-redux";
+import { getQueryResult } from "../redux/action/actions";
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -16,12 +18,12 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function SearchComponent() {
+function SearchComponent(props) {
   const [searchData, setSearchData] = useState("");
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    console.log(searchData);
+    props.getQueryResult({ keyword: searchData });
   };
   const classes = useStyles();
   return (
@@ -54,4 +56,8 @@ function SearchComponent() {
   );
 }
 
-export default SearchComponent;
+const mapStatetoProps = (state) => {
+  return {};
+};
+
+export default connect(mapStatetoProps, { getQueryResult })(SearchComponent);

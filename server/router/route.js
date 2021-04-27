@@ -16,12 +16,14 @@ router.get("/all", (req, res) => {
   });
 });
 
-router.get("/q", (req, res) => {
+router.post("/q", (req, res) => {
   const regex = /[\s']/gi;
   const keyw = req.body.key.split(regex);
   let pat = "";
   keyw.forEach((val, ind, arr) => {
-    if (ind == 0) {
+    if (ind == 0 && arr.length == 1) {
+      pat = "(" + val + ")";
+    } else if (ind == 0) {
       pat = "(" + val + "|";
     } else if (ind == arr.length - 1) {
       pat = pat + val + ")";
@@ -29,6 +31,7 @@ router.get("/q", (req, res) => {
       pat = pat + val + "|";
     }
   });
+  console.log(pat);
   PdfLink.find({ title: { $regex: pat, $options: "gi" } })
     .then((d) => {
       res.json(d);
