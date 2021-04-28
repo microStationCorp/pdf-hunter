@@ -8,6 +8,6 @@ export const getQueryResult = (queryData) => (dispatch) => {
   });
 
   axios
-    .post("http://localhost:5000/api/q", { key: queryData.keyword })
+    .post("/api/q", { key: queryData.keyword })
     .then((res) => dispatch({ type: ITEM_LOADED, payload: res.data }));
 };

@@ -9,6 +9,7 @@ export const queryReducer = (state = queryState, action) => {
         isLoading: true,
         queryResult: [],
         firstLoad: false,
+        queryKeyword: action.payload,
       };
 
     case ITEM_LOADED:

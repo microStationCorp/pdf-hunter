@@ -17,8 +17,7 @@ router.get("/all", (req, res) => {
 });
 
 router.post("/q", (req, res) => {
-  const regex = /[\s']/gi;
-  const keyw = req.body.key.split(regex);
+  const keyw = req.body.key;
   let pat = "";
   keyw.forEach((val, ind, arr) => {
     if (ind == 0 && arr.length == 1) {
@@ -31,10 +30,9 @@ router.post("/q", (req, res) => {
       pat = pat + val + "|";
     }
   });
-  console.log(pat);
   PdfLink.find({ title: { $regex: pat, $options: "gi" } })
-    .then((d) => {
-      res.json(d);
+    .then((data) => {
+      res.json(data);
     })
     .catch((err) => res.json(err));
 });

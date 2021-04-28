@@ -6,5 +6,5 @@ POST http://localhost:5000/api/q
 Content-Type: application/json
 
 {
-    "key":"."
+    "key":"golpo"
 }

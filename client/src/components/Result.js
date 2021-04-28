@@ -1,15 +1,65 @@
 import { connect } from "react-redux";
-function ResultComponent(props) {
-  console.log(props);
+import {
+  List,
+  ListItem,
+  ListItemText,
+  Container,
+  Chip,
+} from "@material-ui/core";
+import React from "react";
+
+function ResultComponent({ queryKeyword, queryResult }) {
   return (
     <div>
-      result area
-      <ol>
-        {props.queryResult.map((r) => (
-          <li key={r._id}>{r.title}</li>
-        ))}
-      </ol>
+      {queryKeyword != null && queryKeyword.length !== 0 ? (
+        <Container>
+          <span>Keywords : </span>
+          {queryKeyword.map((k) => (
+            <React.Fragment key={k}>
+              <Chip
+                label={k}
+                style={{ fontWeight: "bold" }}
+                variant="outlined"
+                color="secondary"
+                size="small"
+              />
+              <span> </span>
+            </React.Fragment>
+          ))}
+        </Container>
+      ) : null}
+
+      <Container maxWidth="sm">
+        <List component="nav">
+          {queryResult.map((r) => (
+            <SingleResultComponent key={r._id} title={r.title} />
+          ))}
+        </List>
+      </Container>
     </div>
+  );
+}
+
+function SingleResultComponent({ title }) {
+  return (
+    <ListItemLink href="#">
+      <ListItemText style={{ textAlign: "center" }} primary={title} />
+    </ListItemLink>
+  );
+}
+
+function ListItemLink(props) {
+  return (
+    <ListItem
+      style={{
+        border: "1px solid #037E65",
+        margin: "5px 0px",
+        borderRadius: "5px",
+      }}
+      button
+      component="a"
+      {...props}
+    />
   );
 }
 

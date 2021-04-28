@@ -20,17 +20,47 @@ const useStyles = makeStyles(() => ({
 
 function SearchComponent(props) {
   const [searchData, setSearchData] = useState("");
+  const [error, setError] = useState({
+    bool: false,
+    label: "",
+  });
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    props.getQueryResult({ keyword: searchData });
+
+    const regex = /([^a-zA-z0-9]|[_])/gi;
+
+    let primaryKeyw = searchData.split(regex);
+
+    let ValidKey = primaryKeyw.filter((v) => {
+      const patt = /^[a-zA-Z]*$/gi;
+      return patt.test(v) && v.length > 1;
+    });
+
+    if (ValidKey.length > 0) {
+      props.getQueryResult({ keyword: ValidKey });
+      setError({
+        bool: false,
+        label: "",
+      });
+    } else {
+      setError({
+        bool: true,
+        label: "enter a valid keyWord",
+      });
+    }
   };
+
   const classes = useStyles();
   return (
     <div className={classes.container}>
       <form onSubmit={onSubmitHandler}>
         <div>
           <TextField
+            required
+            error={error.bool}
+            placeholder="search"
+            label={error.label}
             id="outlined-basic"
             variant="outlined"
             fullWidth
