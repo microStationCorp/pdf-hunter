@@ -5,10 +5,11 @@ import {
   ListItemText,
   Container,
   Chip,
+  CircularProgress,
 } from "@material-ui/core";
 import React from "react";
 
-function ResultComponent({ queryKeyword, queryResult }) {
+function ResultComponent({ queryKeyword, queryResult, firstLoad, isLoading }) {
   return (
     <div>
       {queryKeyword != null && queryKeyword.length !== 0 ? (
@@ -29,13 +30,31 @@ function ResultComponent({ queryKeyword, queryResult }) {
         </Container>
       ) : null}
 
-      <Container maxWidth="sm">
-        <List component="nav">
-          {queryResult.map((r) => (
-            <SingleResultComponent key={r._id} title={r.title} />
-          ))}
-        </List>
-      </Container>
+      {!isLoading ? (
+        queryResult.length !== 0 ? (
+          <Container maxWidth="sm">
+            <List component="nav">
+              {queryResult.map((r) => (
+                <SingleResultComponent key={r._id} title={r.title} />
+              ))}
+            </List>
+          </Container>
+        ) : !firstLoad ? (
+          <Container maxWidth="sm">
+            <BlankResultComponent />
+          </Container>
+        ) : null
+      ) : (
+        <Container
+          maxWidth="sm"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <CircularProgress />
+        </Container>
+      )}
     </div>
   );
 }
@@ -45,6 +64,25 @@ function SingleResultComponent({ title }) {
     <ListItemLink href="#">
       <ListItemText style={{ textAlign: "center" }} primary={title} />
     </ListItemLink>
+  );
+}
+
+function BlankResultComponent() {
+  return (
+    <List>
+      <ListItem
+        style={{
+          border: "1px solid #037E65",
+          margin: "5px 0px",
+          borderRadius: "5px",
+        }}
+      >
+        <ListItemText
+          style={{ textAlign: "center", color: "#C01F0A" }}
+          primary="nothing Found"
+        />
+      </ListItem>
+    </List>
   );
 }
 
