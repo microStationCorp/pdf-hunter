@@ -6,6 +6,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useState } from "react";
 import { connect } from "react-redux";
 import { getQueryResult } from "../redux/action/actions";
+import store from "../redux/store";
+import { ITEM_LOADED, ITEM_LOADING } from "../redux/constants/constants.js";
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -29,8 +31,7 @@ function SearchComponent(props) {
     e.preventDefault();
 
     const regex = /([^a-zA-z0-9]|[_])/gi;
-
-    let primaryKeyw = searchData.split(regex);
+    let primaryKeyw = searchData.toLowerCase().split(regex);
 
     let ValidKey = primaryKeyw.filter((v) => {
       const patt = /^[a-zA-Z]*$/gi;
@@ -38,11 +39,25 @@ function SearchComponent(props) {
     });
 
     if (ValidKey.length > 0) {
-      props.getQueryResult({ keyword: ValidKey });
-      setError({
-        bool: false,
-        label: "",
-      });
+      let keyw = JSON.parse(sessionStorage.getItem(JSON.stringify(ValidKey)));
+      console.log(keyw);
+      if (!keyw) {
+        props.getQueryResult({ keyword: ValidKey });
+        setError({
+          bool: false,
+          label: "",
+        });
+      } else {
+        console.log("in local storage");
+        store.dispatch({
+          type: ITEM_LOADING,
+          payload: ValidKey,
+        });
+        store.dispatch({
+          type: ITEM_LOADED,
+          payload: keyw,
+        });
+      }
     } else {
       setError({
         bool: true,

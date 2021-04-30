@@ -13,6 +13,10 @@ export const queryReducer = (state = queryState, action) => {
       };
 
     case ITEM_LOADED:
+      sessionStorage.setItem(
+        JSON.stringify(state.queryKeyword),
+        JSON.stringify(action.payload)
+      );
       return {
         ...state,
         queryResult: action.payload,
